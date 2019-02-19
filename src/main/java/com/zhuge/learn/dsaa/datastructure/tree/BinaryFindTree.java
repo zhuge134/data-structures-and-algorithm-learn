@@ -1,6 +1,7 @@
 package com.zhuge.learn.dsaa.datastructure.tree;
 
-public class BinaryFindTree<E extends Comparable<E>> extends BinaryTree<E, BinaryFindTree<E>> {
+public class BinaryFindTree<E extends Comparable<E>>
+        extends BinaryTree<E, BinaryFindTree<E>> {
 
     /**
      * 当前节点相等的元素个数

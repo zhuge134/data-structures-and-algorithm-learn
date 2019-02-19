@@ -2,13 +2,23 @@ package com.zhuge.learn.dsaa.datastructure.tree;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * @Title: BinaryTree
  * @Description:
  * @author: zhuge
  * @date: 2019/2/17 23:14
  */
-public abstract class BinaryTree<E,SELF extends BinaryTree<E,SELF>> {
+public abstract class BinaryTree<E, SELF extends BinaryTree<E, SELF>> implements Cloneable {
+
+    abstract protected SELF find(E e);
+
+    abstract protected void insert(E e);
+
+    /**
+     * 树的高度
+     */
+    protected int height;
 
     /**
      * 节点的元素
@@ -29,10 +39,16 @@ public abstract class BinaryTree<E,SELF extends BinaryTree<E,SELF>> {
         this.element = e;
         this.leftChild = leftChild;
         this.rightChild = rightChild;
+        height = Math.max(height(leftChild), height(rightChild)) + 1;
     }
 
     public BinaryTree(E e) {
         this.element = e;
+        height = 0;
+    }
+
+    protected void refreshHeight() {
+        this.height = Math.max(height(leftChild), height(rightChild)) + 1;
     }
 
     public BinaryTree() {
@@ -91,5 +107,27 @@ public abstract class BinaryTree<E,SELF extends BinaryTree<E,SELF>> {
         }
         list.add(element);
         return list;
+    }
+
+    /**
+     * 计算树的高度
+     *
+     * @param tree
+     * @return
+     */
+    protected int height(BinaryTree tree) {
+        //空节点的高度为-1
+        if (null == tree) {
+            return -1;
+        }
+        return tree.height;
+    }
+
+    protected SELF clone() {
+        try {
+            return (SELF) super.clone();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
