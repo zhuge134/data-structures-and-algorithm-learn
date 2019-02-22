@@ -1,3 +1,4 @@
+import com.zhuge.learn.dsaa.datastructure.heap.BinaryHeap;
 import com.zhuge.learn.dsaa.datastructure.stack.Utils;
 import com.zhuge.learn.dsaa.datastructure.tree.AVLTree;
 import com.zhuge.learn.dsaa.datastructure.tree.BinaryFindTree;
@@ -24,9 +25,26 @@ public class UtilsTest {
     @Test
     public void avlTreeTest() {
         Integer[] nums = {3, 4, 5, 6, 8, 78, 323, 2, 4, 3, 4, 3, 35, 3, 5, 45, 7, 8, 9, 76, 80, 14, 32, 5, 6, 47, 45};
-        AVLTree<Integer> avlTree= com.zhuge.learn.dsaa.datastructure.tree.Utils.buildAVLTree(nums);
+        AVLTree<Integer> avlTree = com.zhuge.learn.dsaa.datastructure.tree.Utils.buildAVLTree(nums);
         AVLTree<Integer> node = avlTree.find(323);
         AVLTree<Integer> node2 = avlTree.find(9999);
         System.out.println(avlTree.mediaTraversal());
+    }
+
+    @Test
+    public void heapTest() {
+        Integer[] nums = {3, 4, 5, 6, 8, 78, 323, 2, 4, 3, 4, 3, 35, 3, 5, 45, 7, 8, 9, 76, 80, 14, 32, 5, 6, 47, 45};
+        //BinaryHeap<Integer> heap = new BinaryHeap<Integer>(Arrays.copyOfRange(nums, 0, 5));
+        BinaryHeap<Integer> heap = new BinaryHeap<Integer>(30);
+        for (int i = 0; i < nums.length; i++) {
+            heap.insert(nums[i]);
+        }
+        for (; ; ) {
+            Integer heapTop = heap.deleteMin();
+            if (null == heapTop) {
+                break;
+            }
+            System.out.print(heapTop + " ");
+        }
     }
 }
