@@ -4,6 +4,8 @@ import com.zhuge.learn.dsaa.datastructure.tree.AVLTree;
 import com.zhuge.learn.dsaa.datastructure.tree.BinaryFindTree;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 public class UtilsTest {
 
     @Test
@@ -35,8 +37,8 @@ public class UtilsTest {
     public void heapTest() {
         Integer[] nums = {3, 4, 5, 6, 8, 78, 323, 2, 4, 3, 4, 3, 35, 3, 5, 45, 7, 8, 9, 76, 80, 14, 32, 5, 6, 47, 45};
         //BinaryHeap<Integer> heap = new BinaryHeap<Integer>(Arrays.copyOfRange(nums, 0, 5));
-        BinaryHeap<Integer> heap = new BinaryHeap<Integer>(30);
-        for (int i = 0; i < nums.length; i++) {
+        BinaryHeap<Integer> heap = new BinaryHeap<Integer>(Arrays.copyOfRange(nums, 0, 5), 30);
+        for (int i = 5; i < nums.length; i++) {
             heap.insert(nums[i]);
         }
         for (; ; ) {

@@ -25,6 +25,18 @@ public class BinaryHeap<E extends Comparable<E>> {
     public BinaryHeap(E[] elements) {
         this.elements = elements;
         this.size = elements.length;
+        this.capacity = size;
+        buildHeap();
+    }
+
+    public BinaryHeap(E[] elements, int capacity) {
+        if (capacity < elements.length) {
+            throw new IllegalArgumentException();
+        }
+        this.elements = new Object[capacity];
+        System.arraycopy(elements, 0, this.elements, 0, elements.length);
+        this.size = elements.length;
+        this.capacity = capacity;
         buildHeap();
     }
 
@@ -33,6 +45,7 @@ public class BinaryHeap<E extends Comparable<E>> {
         this.elements = new Object[capacity];
         this.size = 0;
     }
+
 
     /**
      * 删除堆顶
@@ -45,9 +58,9 @@ public class BinaryHeap<E extends Comparable<E>> {
             return null;
         }
         E top = (E) elements[0];
-        elements[0] = elements[size - 1];
+        E last = (E) elements[size - 1];
         elements[--size] = null;
-        percolateDown(0);
+        percolateDown(0, last);
         return top;
     }
 
@@ -64,8 +77,7 @@ public class BinaryHeap<E extends Comparable<E>> {
             elements[0] = e;
         }
         if (e.compareTo((E) elements[0]) > 0) {
-            elements[0] = e;
-            percolateDown(0);
+            percolateDown(0, e);
             return true;
         } else {
             return false;
@@ -85,88 +97,89 @@ public class BinaryHeap<E extends Comparable<E>> {
         if (size == capacity) {
             return false;
         }
-        elements[size++] = e;
-        percolateUp(size - 1);
+        size++;
+        percolateUp(size - 1, e);
         return true;
     }
 
     /**
      * 初始构建堆
      */
+    @SuppressWarnings("unchecked")
     private void buildHeap() {
         //从最后一个节点的父节点开始向前循环
         for (int i = parent(size - 1); i > -1; i--) {
-            percolateDown(i);
+            percolateDown(i, (E) elements[i]);
         }
     }
 
     /**
      * 从该节点开始向下调整
      *
-     * @param parent
+     * @param curIndex
      */
     @SuppressWarnings("unchecked")
-    private void percolateDown(int parent) {
-        int leftIndex = leftChild(parent);
-        int rightIndex = rightChild(parent);
-        E curNode = (E) elements[parent];
+    private void percolateDown(int curIndex, E node) {
+        if (null == node) {
+            throw new NullPointerException();
+        }
+        int leftIndex = leftChild(curIndex);
+        int rightIndex = rightChild(curIndex);
         if (leftIndex < size && rightIndex < size) {
             E left = (E) elements[leftIndex];
             E right = (E) elements[rightIndex];
             if (left.compareTo(right) <= 0) {
-                if (curNode.compareTo(left) <= 0) {
+                if (node.compareTo(left) <= 0) {
                     // 当前节点是最小值，不需要调整
-                    return;
+                    elements[curIndex] = node;
                 } else {
                     //左孩子是最小值，交换当前节点和左孩子，并调整左孩子
-                    elements[parent] = left;
-                    elements[leftIndex] = curNode;
-                    percolateDown(leftIndex);
-
+                    elements[curIndex] = left;
+                    percolateDown(leftIndex, node);
                 }
             } else {
-                if (curNode.compareTo(right) <= 0) {
+                if (node.compareTo(right) <= 0) {
                     // 当前节点是最小值，不需要调整
-                    return;
+                    elements[curIndex] = node;
                 } else {
                     //右孩子是最小值，交换当前节点和右孩子，并调整右孩子
-                    elements[parent] = right;
-                    elements[rightIndex] = curNode;
-                    percolateDown(rightIndex);
+                    elements[curIndex] = right;
+                    percolateDown(rightIndex, node);
                 }
             }
         } else if (leftIndex < size) {
             E left = (E) elements[leftIndex];
-            if (left.compareTo(curNode) < 0) {
+            if (left.compareTo(node) < 0) {
                 //交换左孩子和当前节点
-                elements[leftIndex] = curNode;
-                elements[parent] = left;
+                elements[leftIndex] = node;
+                elements[curIndex] = left;
                 //无需调整，因为左孩子是最后一个节点
             }
         } else {
-            //无需调整
+            //其余情况无需调整
+            elements[curIndex] = node;
         }
     }
 
     /**
      * 从该节点开始向上调整
      *
-     * @param child
+     * @param curIndex
      */
     @SuppressWarnings("unchecked")
-    private void percolateUp(int child) {
-        E curNode = (E) elements[child];
-        int parentIndex = parent(child);
+    private void percolateUp(int curIndex, E node) {
+        int parentIndex = parent(curIndex);
         if (parentIndex > -1) {
             E parent = (E) elements[parentIndex];
-            if (curNode.compareTo(parent) < 0) {
-                elements[child] = parent;
-                elements[parentIndex] = curNode;
-                percolateUp(parentIndex);
+            if (node.compareTo(parent) < 0) {
+                elements[curIndex] = parent;
+                percolateUp(parentIndex, node);
             } else {
                 //当前节点比父节点大，不需要调整
-                return;
+                elements[curIndex] = node;
             }
+        } else {
+            elements[curIndex] = node;
         }
     }
 
