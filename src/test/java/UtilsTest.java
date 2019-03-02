@@ -2,6 +2,7 @@ import com.zhuge.learn.dsaa.datastructure.heap.BinaryHeap;
 import com.zhuge.learn.dsaa.datastructure.stack.Utils;
 import com.zhuge.learn.dsaa.datastructure.tree.AVLTree;
 import com.zhuge.learn.dsaa.datastructure.tree.BinaryFindTree;
+import com.zhuge.learn.dsaa.datastructure.tree.RedBlackTree;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -48,5 +49,15 @@ public class UtilsTest {
             }
             System.out.print(heapTop + " ");
         }
+    }
+
+    @Test
+    public void rbTreeTest() {
+        Integer[] nums = {3, 4, 5, 6, 8, 78, 323, 2, 4, 3, 0, 1, 35, 3, 5, 45, 7, 8, 9, 76, 80, 14, 32, 5, 6, 47, 45};
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
+        for (Integer i : nums) {
+            tree.insert(i);
+        }
+        tree.middleTraversal(i -> System.out.print(" " + i));
     }
 }
